@@ -66,24 +66,10 @@ print(compute_h(coordinate_test, 2, 2, P_test))
 '''
 
 
-
-
 def computeRecurrenceFactor(Q, P):
     x, y = recover_types(Q)
-    prod = 1
-    for xi in x:
-        prod *= factorial(xi)
-    ## in progress
-    print([x]+[y])
-    np.prod([factorial(i) for i in x])
-
-    for yi in y:
-        prod *= factorial(yi)
-
-
-    for i in range(len(x)): # Or use np.flatten
-        for j in range(len(y)):
-            prod = prod*(P[i][j]**Q[i][j])
+    prod = np.prod([factorial(i) for i in np.concatenate((x, y))])
+    prod *= np.prod(P.flatten()**Q.flatten())
     return prod
 
 Q_test = np.array([[1, 2], [5, 2]])
