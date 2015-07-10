@@ -90,19 +90,18 @@ def computeGeneralRecurrence1(Q, P):
     :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
     :return: the recurrence term A[Q] of type <class 'numpy.float64'>
     """
-    nrows = np.shape(Q)[0]
-    ncols = np.shape(Q)[1]
+    n = np.shape(Q)[0]
+    m = np.shape(Q)[1]
     shape = Q.flatten().tolist()
     A = np.ndarray(shape=np.add(shape, 1), dtype=float)
     grid = [range(i+1) for i in shape]  # Create an array of specified dimension
-    zeroCoordinate = (0,)*ncols*nrows  # nice way to create repeated values in a tuple!
+    zeroCoordinate = (0,)*n*m  # nice way to create repeated values in a tuple!
     A[zeroCoordinate] = 1
 
     for coordinate in product(*grid): # iterate over A
         if coordinate != zeroCoordinate:
-           h = compute_h(coordinate, nrows, ncols,  P) # type: ?
+           h = compute_h(coordinate, n, m, P) # type: ?
            A[coordinate] = computeA(coordinate, A)/h # type: ?
-
 
     return A[tuple(shape)]
 
