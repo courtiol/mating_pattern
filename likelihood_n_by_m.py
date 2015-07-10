@@ -123,4 +123,3 @@ P = np.array([[0.5,1.0] ,[0.7,0.1]], dtype=float)
 Q = np.array([[1,2] ,[2,1]], dtype=int)
 result = computeGeneralPMatingpattern1(Q, P)
 print(result)
-
