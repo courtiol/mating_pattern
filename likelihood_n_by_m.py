@@ -92,16 +92,15 @@ def computeGeneralRecurrence1(Q, P):
     """
     n = np.shape(Q)[0]
     m = np.shape(Q)[1]
-    shape = Q.flatten().tolist()
+    shape = Q.flatten()
     A = np.ndarray(shape=np.add(shape, 1), dtype=float)
     grid = [range(i+1) for i in shape]  # Create an array of specified dimension
     zeroCoordinate = (0,)*n*m  # nice way to create repeated values in a tuple!
     A[zeroCoordinate] = 1
-
-    for coordinate in product(*grid): # iterate over A
+    for coordinate in product(*grid):  # iterate over A
         if coordinate != zeroCoordinate:
-           h = compute_h(coordinate, n, m, P) # type: ?
-           A[coordinate] = computeA(coordinate, A)/h # type: ?
+           h = compute_h(coordinate, n, m, P)  # type: ?
+           A[coordinate] = computeA(coordinate, A)/h  # type: ?
 
     return A[tuple(shape)]
 
