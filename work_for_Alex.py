@@ -1,4 +1,5 @@
 import numpy as np
+from math import factorial
 
 def computeA(coordinate, A):
     # input:
