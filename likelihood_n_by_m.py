@@ -70,8 +70,3 @@ def computeGeneralPMatingpattern1(Q, P):
 
     return prod*computeGeneralRecurrence1(Q, P)
 
-             
-# Test the function
-Q = Matrix([[2,3] ,[3,2]])
-P = Matrix([[1.0,1.0] ,[1.0,1.0]])
-print(computeGeneralPMatingpattern1(Q, P))
