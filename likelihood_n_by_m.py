@@ -67,6 +67,7 @@ def computeGeneralPMatingpattern1(Q, P):
             prod = prod*(P[i][j]**Q[i][j] )
     print("prod "+str(prod))
     print("cP "+str(computeGeneralRecurrence1(Q, P)))
+
     return prod*computeGeneralRecurrence1(Q, P)
 
              
