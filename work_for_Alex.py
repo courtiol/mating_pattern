@@ -29,12 +29,10 @@ def recover_types(Q):
     #  - Q: np.array of a mating pattern
     # output:
     #  - x, y: vectors of males and females
-    nrows = np.shape(Q)[0]
-    ncols = np.shape(Q)[1]
-    unity_x = [1 for i in range(ncols)]  # ToDo: change to np.shape()
-    unity_y = [1 for i in range(nrows)]
-    x = np.dot(np.array(Q), unity_x)
-    y = np.dot(np.transpose(np.array(Q)), unity_y)
+    unity_x = [1 for i in range(np.shape(Q)[0])]
+    unity_y = [1 for i in range(np.shape(Q)[1])]
+    x = np.dot(Q, unity_x)
+    y = np.dot(np.transpose(Q), unity_y)
     return x, y
 
 '''
@@ -67,11 +65,19 @@ print(compute_h(coordinate_test, 2, 2, P_test))
 
 
 def computeRecurrenceFactor(Q, P):
+    # input:
+    #  - Q: np.array of a mating pattern
+    #  - P: np.array of a mating preferences
+    # output:
+    #  - prod: the product needed for recurrence computation
     x, y = recover_types(Q)
     prod = np.prod([factorial(i) for i in np.concatenate((x, y))])
     prod *= np.prod(P.flatten()**Q.flatten())
     return prod
 
+'''
+# example:
 Q_test = np.array([[1, 2], [5, 2]])
 P_test = np.array([[0.2, 0.1], [0.4, 1.0]])
 print(computeRecurrenceFactor(Q_test, P_test))
+'''
