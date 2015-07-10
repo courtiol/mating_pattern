@@ -24,6 +24,26 @@ print(computeA(coordinate_test, A_test)) # should be 7 (= 2 + 5)
 '''
 
 
+def recover_types(Q):
+    # input:
+    #  - Q: np.array of a mating pattern
+    # output:
+    #  - x, y: vectors of males and females
+    nrows = np.shape(Q)[0]
+    ncols = np.shape(Q)[1]
+    unity_x = [1 for i in range(ncols)]  # ToDo: change to np.shape()
+    unity_y = [1 for i in range(nrows)]
+    x = np.dot(np.array(Q), unity_x)
+    y = np.dot(np.transpose(np.array(Q)), unity_y)
+    return x, y
+
+'''
+# example
+Q_test = np.array([[1, 2], [5, 2]])
+print(recover_types(Q_test))
+'''
+
+
 def compute_h(coordinate, n, m, P):
     # input:
     #  - coordinate: a tuple
@@ -33,10 +53,7 @@ def compute_h(coordinate, n, m, P):
     # output:
     #  - h, the numerator of the probability that any mating occur during one time step
     mating_pattern = np.reshape(np.array(coordinate), (n, m))
-    unity_x = [1 for i in range(m)]
-    unity_y = [1 for i in range(n)]
-    x = np.dot(mating_pattern, unity_x)  # vector of males (sum over cols)
-    y = np.dot(np.transpose(mating_pattern), unity_y)  # vector of females (sum over rows)
+    x, y = recover_types(mating_pattern)
     h = np.dot(y, np.dot(P, x))
     return h
 
@@ -48,22 +65,27 @@ print(P_test)
 print(compute_h(coordinate_test, 2, 2, P_test))
 '''
 
-def computeRecurrenceFactor(Q, P):
-    nrows = np.shape(Q)[0]
-    ncols = np.shape(Q)[1]
-    unity_x = [1 for i in range(ncols)] # ToDo: change to np.shape()
-    unity_y = [1 for i in range(nrows)]
-    x = np.dot(np.array(Q),unity_x)
-    y = np.dot(np.transpose(np.array(Q)), unity_y)
 
+
+
+def computeRecurrenceFactor(Q, P):
+    x, y = recover_types(Q)
     prod = 1
     for xi in x:
-        prod = prod*factorial(xi)
+        prod *= factorial(xi)
+    ## in progress
+    print([x]+[y])
+    np.prod([factorial(i) for i in x])
+
     for yi in y:
-        prod = prod*factorial(yi)
+        prod *= factorial(yi)
 
-    for i in range(nrows): # Or use np.flatten
-        for j in range(ncols):
-            prod = prod*(P[i][j]**Q[i][j] )
 
+    for i in range(len(x)): # Or use np.flatten
+        for j in range(len(y)):
+            prod = prod*(P[i][j]**Q[i][j])
     return prod
+
+Q_test = np.array([[1, 2], [5, 2]])
+P_test = np.array([[0.2, 0.1], [0.4, 1.0]])
+print(computeRecurrenceFactor(Q_test, P_test))
