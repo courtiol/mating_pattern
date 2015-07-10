@@ -1,11 +1,11 @@
 import numpy as np
-import math
-
 
 def computeA(coordinate, A):
-    # this function computes the next term of the recurrence
-    # coordinate is a tuple
-    # A is a multidimensional np.array
+    # input:
+    #  - coordinate: a tuple, representing a given mating pattern
+    #  - A: a multidimensional np.array
+    # output:
+    #  - result: an int, next term of the recurrence
     result = 0
     for i in range(len(coordinate)):
         if coordinate[i] > 0:
@@ -22,43 +22,27 @@ coordinate_test = (1, 1)
 print(computeA(coordinate_test, A_test)) # should be 7 (= 2 + 5)
 '''
 
+
 def compute_h(coordinate, n, m, P):
-    # this function compute h, the probability that any mating occur during one time step
-    # coordinate is an array
-    # n is an integer defining the number of male types
-    # m is an integer defining the number of female types
-    # P is the preference matrix
-    C = np.reshape(coordinate, (n, m))
+    # input:
+    #  - coordinate: a tuple
+    #  - n: an integer defining the number of male types
+    #  - m: an integer defining the number of female types
+    #  - P: the preference matrix (np.array)
+    # output:
+    #  - h, the numerator of the probability that any mating occur during one time step
+    mating_pattern = np.reshape(np.array(coordinate), (n, m))
     unity_x = [1 for i in range(m)]
     unity_y = [1 for i in range(n)]
-    x = np.dot(C, unity_x)
-    y = np.dot(np.transpose(C), unity_y)
-    return np.dot(y, np.dot(P, x))
+    x = np.dot(mating_pattern, unity_x)  # vector of males (sum over cols)
+    y = np.dot(np.transpose(mating_pattern), unity_y)  # vector of females (sum over rows)
+    h = np.dot(y, np.dot(P, x))
+    return h
 
-coordinate_test = np.array([1, 1])
+'''
+# example:
+coordinate_test = (1, 2, 1, 1)
 P_test = np.array([[0.2, 0.1], [0.4, 1.0]])
 print(P_test)
-#print(compute_h(coordinate_test, 5, 5, P_test))
-
-
-
-
-def computeGeneralPMatingpattern1(Q, P):
-    unity_x = [1 for i in range(Q.ncols())] # ToDo: change to np.shape()
-    unity_y = [1 for i in range(Q.nrows())]
-    x = np.dot(np.array(Q),unity_x)
-    y = np.dot(np.transpose(np.array(Q)), unity_y)
-
-    prod = 1
-    for xi in x:
-        prod = prod*math.factorial(xi)
-    for yi in y:
-        prod = prod*math.factorial(yi)
-
-    for i in range(Q.nrows()): # Or use np.flatten
-        for j in range(Q.ncols()):
-            prod = prod*(P[i][j]**Q[i][j] )
-    print("prod "+str(prod))
-    print("cP "+str(computeGeneralRecurrence1(Q, P)))
-
-    return prod*computeGeneralRecurrence1(Q, P)
+print(compute_h(coordinate_test, 2, 2, P_test))
+'''
