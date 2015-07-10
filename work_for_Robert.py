@@ -1,6 +1,6 @@
 import numpy as np
 from itertools import product
-from likelihood_n_by_m import compute_h, computeA
+from work_for_Alex import compute_h, computeA
 from math import factorial
 
 
