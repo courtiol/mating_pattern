@@ -8,8 +8,8 @@ def recover_types(Q):
     #  - Q: np.array of a mating pattern
     # output:
     #  - x, y: vectors of males and females
-    unity_x = [1 for i in range(np.shape(Q)[0])]
-    unity_y = [1 for i in range(np.shape(Q)[1])]
+    unity_x = [1, ] * np.shape(Q)[0]
+    unity_y = [1, ] * np.shape(Q)[1]
     x = np.dot(Q, unity_x)
     y = np.dot(np.transpose(Q), unity_y)
     return x, y
@@ -92,22 +92,15 @@ def computeGeneralRecurrence1(Q, P):
     """
     nrows = np.shape(Q)[0]
     ncols = np.shape(Q)[1]
-    sizeShape = ncols * nrows
-
-    #shape = (np.reshape(Q, (1, sizeShape))[0]).tolist()
     shape = Q.flatten().tolist()
-
-
     A = np.ndarray(shape=np.add(shape, 1), dtype=float)
-
-    # Create an array of specified dimension
-    grid = [range(i+1) for i in shape]
-    zeroCoordinate = tuple( (0 for _ in range(sizeShape)) )
+    grid = [range(i+1) for i in shape]  # Create an array of specified dimension
+    zeroCoordinate = (0,)*ncols*nrows  # nice way to create repeated values in a tuple!
     A[zeroCoordinate] = 1
 
     for coordinate in product(*grid): # iterate over A
         if coordinate != zeroCoordinate:
-           h = compute_h(coordinate,nrows, ncols,  P) # type: ?
+           h = compute_h(coordinate, nrows, ncols,  P) # type: ?
            A[coordinate] = computeA(coordinate, A)/h # type: ?
 
 
