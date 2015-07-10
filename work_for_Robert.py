@@ -32,10 +32,11 @@ def computeGeneralRecurrence1(Q, P):
 
     return A[tuple(shape)]
 
-
-def computeGeneralPMatingpattern1(Q, P):
-    unity_x = [1 for i in range(Q.ncols())] # ToDo: change to np.shape()
-    unity_y = [1 for i in range(Q.nrows())]
+def computeRecurrenceFactor(Q, P):
+    nrows = np.shape(Q)[0]
+    ncols = np.shape(Q)[1]
+    unity_x = [1 for i in range(ncols)] # ToDo: change to np.shape()
+    unity_y = [1 for i in range(nrows)]
     x = np.dot(np.array(Q),unity_x)
     y = np.dot(np.transpose(np.array(Q)), unity_y)
 
@@ -45,18 +46,20 @@ def computeGeneralPMatingpattern1(Q, P):
     for yi in y:
         prod = prod*factorial(yi)
 
-    for i in range(Q.nrows()): # Or use np.flatten
-        for j in range(Q.ncols()):
+    for i in range(nrows): # Or use np.flatten
+        for j in range(ncols):
             prod = prod*(P[i][j]**Q[i][j] )
-    print("prod "+str(prod))
-    print("cP "+str(computeGeneralRecurrence1(Q, P)))
 
+    return prod
+
+def computeGeneralPMatingpattern1(Q, P):
+    prod = computeRecurrenceFactor(Q, P)
     return prod*computeGeneralRecurrence1(Q, P)
 
 # Test the function
 P = np.array([[1.0,1.0] ,[1.0,1.0]], dtype=float)
 Q = np.array([[2,1] ,[1,2]], dtype=int)
 
-result = computeGeneralRecurrence1(Q, P)
+result = computeGeneralPMatingpattern1(Q, P)
 
 print(result)
