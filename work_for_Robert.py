@@ -1,12 +1,11 @@
 import numpy as np
 from itertools import product
-from work_for_Alex import compute_h, computeA
-from math import factorial
+from work_for_Alex import compute_h, computeA, computeRecurrenceFactor
 
 
 def computeGeneralRecurrence1(Q, P):
     """
-    This method computes the recurrence A[Q] = 1/* ( A[Q-E11] + ... A[Q-E_mn])
+    This method computes the recurrence A[Q] = 1/h* ( A[Q-E11] + ... A[Q-E_mn])
     :param Q: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.int64'>
     :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
     :return: the recurrence term A[Q] of type <class 'numpy.float64'>
@@ -33,13 +32,19 @@ def computeGeneralRecurrence1(Q, P):
     return A[tuple(shape)]
 
 def computeGeneralPMatingpattern1(Q, P):
+    """
+    This method computes the recurrence A[Q] =  f_11*A[Q-E11] + ... f_mn*A[Q-E_mn])
+    :param Q: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.int64'>
+    :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
+    :return: the recurrence term A[Q] of type <class 'numpy.float64'>
+    """
     prod = computeRecurrenceFactor(Q, P)
     return prod*computeGeneralRecurrence1(Q, P)
 
-# Test the function
-P = np.array([[1.0,1.0] ,[1.0,1.0]], dtype=float)
-Q = np.array([[2,1] ,[1,2]], dtype=int)
 
+# Testcase:
+P = np.array([[0.5,1.0] ,[0.7,0.1]], dtype=float)
+Q = np.array([[1,2] ,[2,1]], dtype=int)
 result = computeGeneralPMatingpattern1(Q, P)
 
 print(result)
