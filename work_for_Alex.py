@@ -46,3 +46,23 @@ P_test = np.array([[0.2, 0.1], [0.4, 1.0]])
 print(P_test)
 print(compute_h(coordinate_test, 2, 2, P_test))
 '''
+
+def computeRecurrenceFactor(Q, P):
+    nrows = np.shape(Q)[0]
+    ncols = np.shape(Q)[1]
+    unity_x = [1 for i in range(ncols)] # ToDo: change to np.shape()
+    unity_y = [1 for i in range(nrows)]
+    x = np.dot(np.array(Q),unity_x)
+    y = np.dot(np.transpose(np.array(Q)), unity_y)
+
+    prod = 1
+    for xi in x:
+        prod = prod*factorial(xi)
+    for yi in y:
+        prod = prod*factorial(yi)
+
+    for i in range(nrows): # Or use np.flatten
+        for j in range(ncols):
+            prod = prod*(P[i][j]**Q[i][j] )
+
+    return prod
