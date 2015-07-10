@@ -13,7 +13,6 @@ def recover_types(Q):
     x = np.dot(Q, unity_x)
     y = np.dot(np.transpose(Q), unity_y)
     return x, y
-
 '''
 # example
 Q_test = np.array([[1, 2], [5, 2]])
@@ -57,7 +56,6 @@ def compute_h(coordinate, n, m, P):
     x, y = recover_types(mating_pattern)
     h = np.dot(y, np.dot(P, x))
     return h
-
 '''
 # example:
 coordinate_test = (1, 2, 1, 1)
@@ -77,7 +75,6 @@ def computeRecurrenceFactor(Q, P):
     prod = np.prod([factorial(i) for i in np.concatenate((x, y))])
     prod *= np.prod(P.flatten()**Q.flatten())
     return prod
-
 '''
 # example:
 Q_test = np.array([[1, 2], [5, 2]])
@@ -97,9 +94,11 @@ def computeGeneralRecurrence1(Q, P):
     ncols = np.shape(Q)[1]
     sizeShape = ncols * nrows
 
-    shape = (np.reshape(Q, (1, sizeShape))[0]).tolist()
+    #shape = (np.reshape(Q, (1, sizeShape))[0]).tolist()
+    shape = Q.flatten().tolist()
 
-    A = np.ndarray(shape=np.add(shape,1), dtype=float)
+
+    A = np.ndarray(shape=np.add(shape, 1), dtype=float)
 
     # Create an array of specified dimension
     grid = [range(i+1) for i in shape]
@@ -122,8 +121,8 @@ def computeGeneralPMatingpattern1(Q, P):
     :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
     :return: the recurrence term A[Q] of type <class 'numpy.float64'>
     """
-    prod = computeRecurrenceFactor(Q, P)
-    return prod*computeGeneralRecurrence1(Q, P)
+    prod = computeRecurrenceFactor(Q, P)*computeGeneralRecurrence1(Q, P)
+    return prod
 
 
 # Testcase:
