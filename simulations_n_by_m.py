@@ -1,7 +1,5 @@
-# NB: all these functions should work for any number of male and female types!
 import numpy as np
 import random
-from likelihood_n_by_m import recover_types
 
 def choose_random(v):
     v_pct = [i/sum(v) for i in v]
@@ -42,23 +40,36 @@ def countMatingPattern(x, y, P, number_simu):
     return dict_Q
 
 def freqMatingPattern(Q, P, number_simu):
-    x, y = recover_types(Q)
+    if np.shape(Q)[0] != np.shape(Q)[1] | np.shape(P)[0] != np.shape(P)[1]:
+        print("error: np arrays for Q and P must be square matrices")
+        return 0
+    x = Q.sum(axis=0)
+    y = Q.sum(axis=1)
     dict_Q = countMatingPattern(x, y, P, number_simu)
     if str(Q) not in dict_Q.keys():
         print("warning: keys for Q not found")
     nb = dict_Q[str(Q)]
     return nb/number_simu
 
-'''
-# Test of computeMatingPattern
-x = np.array([1, 2])
-y = np.array([2, 2])
-P = np.array([[0.5, 1.0], [0.7, 0.1]], dtype=float)
-test = computeMatingPattern(x, y, P)
-print(test)
-'''
 
-# Frequency of a given mating pattern in the universe
-P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
-Q = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=int)
-print(freqMatingPattern(Q, P, 100))
+if __name__ == '__main__':
+    import yappi
+    yappi.start()
+    try:
+        '''
+        # Test of computeMatingPattern
+        x = np.array([1, 2])
+        y = np.array([2, 2])
+        P = np.array([[0.5, 1.0], [0.7, 0.1]], dtype=float)
+        test = computeMatingPattern(x, y, P)
+        print(test)
+        '''
+
+        # Frequency of a given mating pattern in the universe
+
+        P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
+        Q = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=int)
+        print(freqMatingPattern(Q, P, 5))
+
+    finally:
+        yappi.get_func_stats().print_all()

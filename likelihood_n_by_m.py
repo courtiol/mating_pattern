@@ -3,23 +3,6 @@ from itertools import product
 from math import factorial
 
 
-def recover_types(Q):
-    # input:
-    #  - Q: np.array of a mating pattern
-    # output:
-    #  - x, y: vectors of males and females
-    unity_x = [1, ] * np.shape(Q)[0]
-    unity_y = [1, ] * np.shape(Q)[1]
-    x = np.dot(Q, unity_x)
-    y = np.dot(np.transpose(Q), unity_y)
-    return x, y
-'''
-# example
-Q_test = np.array([[1, 2], [5, 2]])
-print(recover_types(Q_test))
-'''
-
-
 def computeA(coordinate, A):
     # input:
     #  - coordinate: a tuple, representing a given mating pattern
@@ -53,7 +36,8 @@ def compute_h(coordinate, n, m, P):
     #  - h, the numerator of the probability that any mating occur during one time step
 
     mating_pattern = np.reshape(np.array(coordinate), (n, m))
-    x, y = recover_types(mating_pattern)
+    x = mating_pattern.sum(axis=0)
+    y = mating_pattern.sum(axis=1)
     return np.dot(y, np.dot(P, x))  # h
 '''
 # example:
@@ -70,8 +54,9 @@ def computeRecurrenceFactor(Q, P):
     #  - P: np.array of a mating preferences
     # output:
     #  - prod: the product needed for recurrence computation
-    x, y = recover_types(Q)
-    prod = np.prod([factorial(i) for i in np.concatenate((x, y))])
+
+    # factorial on all types, males (x=Q.sum(axis=0) and females (Q.sum(axis=1))
+    prod = np.prod([factorial(i) for i in np.concatenate((Q.sum(axis=0), Q.sum(axis=1)))])
     prod *= np.prod(P**Q)
     return prod
 '''
@@ -102,8 +87,9 @@ def computeGeneralPMatingpattern1(Q, P):
            A[coordinate] = computeA(coordinate, A)/h  # type: ?
     return computeRecurrenceFactor(Q, P)*A[tuple(shape)]
 
-# Testcase:
-P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
-Q = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=int)
-result = computeGeneralPMatingpattern1(Q, P)
-print(result)
+if __name__ == '__main__':
+    # Testcase:
+    P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
+    Q = np.array([[3, 1, 1], [1, 5, 1], [1, 1, 0]], dtype=int)
+    result = computeGeneralPMatingpattern1(Q, P)
+    print(result)
