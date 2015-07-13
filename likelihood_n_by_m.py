@@ -88,8 +88,14 @@ def computeGeneralPMatingpattern1(Q, P):
     return computeRecurrenceFactor(Q, P)*A[tuple(shape)]
 
 if __name__ == '__main__':
-    # Testcase:
-    P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
-    Q = np.array([[3, 1, 1], [1, 5, 1], [1, 1, 0]], dtype=int)
-    result = computeGeneralPMatingpattern1(Q, P)
-    print(result)
+    import yappi
+    yappi.start()
+    try:
+        # Testcase:
+        P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
+        Q = np.array([[3, 5, 1], [1, 5, 1], [1, 1, 0]], dtype=int)
+        result = computeGeneralPMatingpattern1(Q, P)
+        print(result)
+
+    finally:
+        yappi.get_func_stats().print_all()
