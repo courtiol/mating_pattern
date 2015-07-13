@@ -54,8 +54,7 @@ def compute_h(coordinate, n, m, P):
 
     mating_pattern = np.reshape(np.array(coordinate), (n, m))
     x, y = recover_types(mating_pattern)
-    h = np.dot(y, np.dot(P, x))
-    return h
+    return np.dot(y, np.dot(P, x))  # h
 '''
 # example:
 coordinate_test = (1, 2, 1, 1)
@@ -73,7 +72,7 @@ def computeRecurrenceFactor(Q, P):
     #  - prod: the product needed for recurrence computation
     x, y = recover_types(Q)
     prod = np.prod([factorial(i) for i in np.concatenate((x, y))])
-    prod *= np.prod(P.flatten()**Q.flatten())
+    prod *= np.prod(P**Q)
     return prod
 '''
 # example:
@@ -83,9 +82,9 @@ print(computeRecurrenceFactor(Q_test, P_test))
 '''
 
 
-def computeGeneralRecurrence1(Q, P):
+def computeGeneralPMatingpattern1(Q, P):
     """
-    This method computes the recurrence A[Q] = 1/h* ( A[Q-E11] + ... A[Q-E_mn])
+    This method computes the recurrence A[Q] = 1/h* ( g_11*A[Q-E11] + ... *g_{m,m}*A[Q-E_mm])  // WRONG, now does full recurence
     :param Q: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.int64'>
     :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
     :return: the recurrence term A[Q] of type <class 'numpy.float64'>
@@ -101,20 +100,7 @@ def computeGeneralRecurrence1(Q, P):
         if coordinate != zeroCoordinate:
            h = compute_h(coordinate, n, m, P)  # type: ?
            A[coordinate] = computeA(coordinate, A)/h  # type: ?
-
-    return A[tuple(shape)]
-
-
-def computeGeneralPMatingpattern1(Q, P):
-    """
-    This method computes the recurrence A[Q] =  f_11*A[Q-E11] + ... f_mn*A[Q-E_mn])
-    :param Q: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.int64'>
-    :param P: multidimensional numpy.array of type <class 'numpy.ndarray'> with coefficients of <class 'numpy.float64'>
-    :return: the recurrence term A[Q] of type <class 'numpy.float64'>
-    """
-    prod = computeRecurrenceFactor(Q, P)*computeGeneralRecurrence1(Q, P)
-    return prod
-
+    return computeRecurrenceFactor(Q, P)*A[tuple(shape)]
 
 # Testcase:
 P = np.array([[0.5,1.0] ,[0.7,0.1]], dtype=float)
