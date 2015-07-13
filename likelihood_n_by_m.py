@@ -103,7 +103,7 @@ def computeGeneralPMatingpattern1(Q, P):
     return computeRecurrenceFactor(Q, P)*A[tuple(shape)]
 
 # Testcase:
-P = np.array([[0.5,1.0] ,[0.7,0.1]], dtype=float)
-Q = np.array([[1,2] ,[2,1]], dtype=int)
+P = np.array([[1.0, 1.0, 0.0001], [1.0, 1.0, 0.0001], [0.0001, 0.0001, 0]], dtype=float)
+Q = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=int)
 result = computeGeneralPMatingpattern1(Q, P)
 print(result)
