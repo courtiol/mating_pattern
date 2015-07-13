@@ -29,7 +29,7 @@ if __name__ == '__main__':
     statprof.start()
     try:
         P = np.array([[0.1, 0.001], [0.2, 0.001]], dtype=float)
-        Q = np.array([[10, 20], [20, 10]], dtype=int)
+        Q = np.array([[20, 20], [20, 10]], dtype=int)
         print(likelihood(Q, P))
 
     finally:
