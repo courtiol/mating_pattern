@@ -3,7 +3,7 @@ from itertools import product
 from math import factorial
 
 
-def computeGeneralPMatingpattern(Q, P):
+def likelihood(Q, P):
     shape = Q.flatten()
     A = np.ones(shape=np.add(shape, 1), dtype=float)  # create nd array initialised at one
     grid = [range(i+1) for i in shape]  # Create an array of specified dimension
@@ -24,10 +24,9 @@ if __name__ == '__main__':
     import yappi
     yappi.start()
     try:
-        # Testcase:
         P = np.array([[0.1, 0.001], [0.2, 0.001]], dtype=float)
         Q = np.array([[10, 20], [20, 10]], dtype=int)
-        print(computeGeneralPMatingpattern(Q, P))
+        print(likelihood(Q, P))
 
     finally:
         yappi.get_func_stats().print_all()
