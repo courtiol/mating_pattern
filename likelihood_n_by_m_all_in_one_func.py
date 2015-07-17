@@ -7,6 +7,7 @@ def likelihood(Q, P):
     shape = Q.flatten()
     shape_range = range(len(shape))
     q_shape = np.shape(Q)
+    print(np.prod(np.add(shape, 1)))
     A = np.ones(shape=np.add(shape, 1), dtype=float)  # create nd array initialised at one
     grid = [range(i+1) for i in shape]  # Create an array of specified dimension
     for coordinate in product(*grid):  # iterate over A
@@ -28,8 +29,8 @@ if __name__ == '__main__':
     import statprof
     statprof.start()
     try:
-        P = np.array([[0.1, 0.001], [0.2, 0.001]], dtype=float)
-        Q = np.array([[20, 20], [20, 10]], dtype=int)
+        P = np.array([[0.1, 0.1, 0.01], [0.2, 0.2, 0.001], [0.1, 0.5, 0.01]], dtype=float)
+        Q = np.array([[20, 20, 10], [20, 10, 10], [50, 20, 10]], dtype=int)
         print(likelihood(Q, P))
 
     finally:

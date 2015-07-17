@@ -1,19 +1,30 @@
 import numpy as np
 import random
 
+
 def choose_random(v):
     v_pct = [i/sum(v) for i in v]
     choice = np.random.multinomial(1, v_pct)
-    return sum(choice*list(range(0, len(v))))
+    return sum(choice*range(0, len(v)))
+
+'''
+# test:
+foo = np.array([0, 10, 20, 10, 60])
+rec = np.array([choose_random(foo) for i in range(0, 10000)])
+print([np.mean(rec == i) for i in range(0, len(foo))])
+'''
 
 def computeMatingPattern(x, y, P):
     if len(x) != len(P[:, 0]) | len(y) != len(P[0, :]):
         print("error: wrong dimensionality of P (or Q)")
         return 0
-    if sum(x) != sum(y):
-        Q = np.zeros((len(x)+1, len(y)+1), dtype="int32")
+    if sum(x) > sum(y):  # ToDo: replace with cases!
+        Q = np.zeros((len(x), len(y)+1), dtype="int32")
     else:
-        Q = np.zeros((len(x), len(y)), dtype="int32")
+        if sum(x) < sum(y):
+            Q = np.zeros((len(x)+1, len(y)), dtype="int32")
+        else:
+            Q = np.zeros((len(x), len(y)), dtype="int32")
     while sum(x) > 0 and sum(y) > 0:
         cx = choose_random(x)
         cy = choose_random(y)
@@ -23,11 +34,20 @@ def computeMatingPattern(x, y, P):
             Q[cx, cy] += 1
     if sum(x) > 0:  # add unpaired males to Q
         for i in range(len(x)):
-            Q[i, len(y)] = x[i]
+            print(i)
+            Q[i, Q.shape[1]-1] = x[i]
     if sum(y) > 0:  # add unpaired females to Q
         for i in range(len(y)):
-            Q[len(x), i] = y[i]
+            Q[Q.shape[0]-1, i] = y[i]
     return Q
+
+'''
+# test:
+males = np.array([1, 3])
+females = np.array([5, 2])
+Pref = np.array([[0.5, 0.5], [0.5, 0.5]])
+computeMatingPattern(males, females, Pref)
+'''
 
 def countMatingPattern(x, y, P, number_simu):
     dict_Q = {}
@@ -39,6 +59,7 @@ def countMatingPattern(x, y, P, number_simu):
             dict_Q[str(Q)] += 1
     return dict_Q
 
+
 def freqMatingPattern(Q, P, number_simu):
     if np.shape(Q)[0] != np.shape(Q)[1] | np.shape(P)[0] != np.shape(P)[1]:
         print("error: np arrays for Q and P must be square matrices")
@@ -47,7 +68,8 @@ def freqMatingPattern(Q, P, number_simu):
     y = Q.sum(axis=1)
     dict_Q = countMatingPattern(x, y, P, number_simu)
     if str(Q) not in dict_Q.keys():
-        print("warning: keys for Q not found")
+        print("Warning: kys for Q not found")
+        return 0
     nb = dict_Q[str(Q)]
     return nb/number_simu
 
@@ -55,7 +77,12 @@ def freqMatingPattern(Q, P, number_simu):
 if __name__ == '__main__':
     import yappi
     yappi.start()
+    # import statprof
+    # statprof.start()
     try:
+        P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
+        Q = np.array([[1, 1, 0], [1, 1, 0], [0, 0, 0]], dtype=int)
+        print(freqMatingPattern(Q, P, 1000))
         '''
         # Test of computeMatingPattern
         x = np.array([1, 2])
@@ -64,12 +91,7 @@ if __name__ == '__main__':
         test = computeMatingPattern(x, y, P)
         print(test)
         '''
-
-        # Frequency of a given mating pattern in the universe
-
-        P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
-        Q = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=int)
-        print(freqMatingPattern(Q, P, 5))
-
     finally:
         yappi.get_func_stats().print_all()
+        # statprof.stop()
+        # statprof.display()
