@@ -14,6 +14,7 @@ rec = np.array([choose_random(foo) for i in range(0, 10000)])
 print([np.mean(rec == i) for i in range(0, len(foo))])
 '''
 
+
 def computeMatingPattern(x, y, P):
     if len(x) != len(P[:, 0]) | len(y) != len(P[0, :]):
         print("error: wrong dimensionality of P (or Q)")
@@ -49,6 +50,7 @@ Pref = np.array([[0.5, 0.5], [0.5, 0.5]])
 computeMatingPattern(males, females, Pref)
 '''
 
+
 def countMatingPattern(x, y, P, number_simu):
     dict_Q = {}
     for i in range(number_simu):
@@ -58,6 +60,13 @@ def countMatingPattern(x, y, P, number_simu):
         else:
             dict_Q[str(Q)] += 1
     return dict_Q
+'''
+# test:
+males = np.array([10, 3])
+females = np.array([5, 2])
+Pref = np.array([[0.5, 0.5], [0.5, 0.5]])
+countMatingPattern(males, females, Pref, 10)
+'''
 
 
 def freqMatingPattern(Q, P, number_simu):
@@ -75,23 +84,17 @@ def freqMatingPattern(Q, P, number_simu):
 
 
 if __name__ == '__main__':
-    import yappi
-    yappi.start()
+    # import yappi
+    # yappi.start()
     # import statprof
     # statprof.start()
-    try:
-        P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
-        Q = np.array([[1, 1, 0], [1, 1, 0], [0, 0, 0]], dtype=int)
-        print(freqMatingPattern(Q, P, 1000))
-        '''
-        # Test of computeMatingPattern
-        x = np.array([1, 2])
-        y = np.array([2, 2])
-        P = np.array([[0.5, 1.0], [0.7, 0.1]], dtype=float)
-        test = computeMatingPattern(x, y, P)
-        print(test)
-        '''
+    # try:
+    P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
+    Q = np.array([[10, 10, 0], [10, 10, 10], [0, 0, 0]], dtype=int)
+    print(freqMatingPattern(Q, P, 100))
+'''
     finally:
         yappi.get_func_stats().print_all()
         # statprof.stop()
         # statprof.display()
+'''
