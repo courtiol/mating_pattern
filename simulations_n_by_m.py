@@ -4,8 +4,9 @@ import random
 
 def choose_random(v):  # Attempt to design a faster function (using stochastic acceptance)
     max_v = max(v)
+    len_v = len(v)
     while 1:
-        i = int(random.random()*len(v))
+        i = int(random.random()*len_v)
         if random.random() <= (v[i]/max_v):
             return i
 
@@ -16,7 +17,6 @@ rec = np.array([choose_random(foo) for i in range(0, 100000)])
 print([np.mean(rec == i) for i in range(0, len(foo))])
 print("goal = "+str(foo/sum(foo)))
 '''
-
 
 
 def computeMatingPattern(x, y, P):
@@ -88,14 +88,14 @@ def freqMatingPattern(Q, P, number_simu):
 
 if __name__ == '__main__':
     import yappi
-    # yappi.start()
+    yappi.start()
     import statprof
     statprof.start()
     try:
-        P = np.array([[1.0, 1.0, 0.001], [1.0, 1.0, 0.0001], [0.001, 0.001, 0]], dtype=float)
+        P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
         Q = np.array([[10, 10, 0], [10, 10, 10], [0, 0, 0]], dtype=int)
         print(freqMatingPattern(Q, P, 100))
     finally:
-        # yappi.get_func_stats().print_all()
+        yappi.get_func_stats().print_all()
         statprof.stop()
         statprof.display()
