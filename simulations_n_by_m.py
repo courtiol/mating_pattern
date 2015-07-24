@@ -93,12 +93,18 @@ if __name__ == '__main__':
     # import statprof
     # statprof.start()
     # try:
-    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
-    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
 
-    P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
-    Q = np.array([[2, 2], [2, 2]], dtype=int)
+    import time
+    start = time.time()
+    #P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
+    #Q = np.array([[50, 20], [20, 20]], dtype=int)
+    P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
+
     print(freqMatingPattern(Q, P, 10000))
+    stop = time.time()
+    print("time = "+str(round(stop-start))+" sec")
+
     # finally:
     #     yappi.get_func_stats().print_all()
     #     statprof.stop()
