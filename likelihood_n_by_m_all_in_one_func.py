@@ -33,7 +33,7 @@ if __name__ == '__main__':
     #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
 
     P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
-    Q = np.array([[10, 10], [10, 10]], dtype=int)
+    Q = np.array([[50, 20], [20, 20]], dtype=int)
     print(likelihood(Q, P))
 
     #finally:
