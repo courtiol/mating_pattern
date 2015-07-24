@@ -87,15 +87,15 @@ def freqMatingPattern(Q, P, number_simu):
 
 
 if __name__ == '__main__':
-    import yappi
-    yappi.start()
-    import statprof
-    statprof.start()
-    try:
-        P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
-        Q = np.array([[10, 10, 0], [10, 10, 10], [0, 0, 0]], dtype=int)
-        print(freqMatingPattern(Q, P, 100))
-    finally:
-        yappi.get_func_stats().print_all()
-        statprof.stop()
-        statprof.display()
+    # import yappi
+    # yappi.start()
+    # import statprof
+    # statprof.start()
+    # try:
+    P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
+    print(freqMatingPattern(Q, P, 1000))
+    # finally:
+    #     yappi.get_func_stats().print_all()
+    #     statprof.stop()
+    #     statprof.display()
