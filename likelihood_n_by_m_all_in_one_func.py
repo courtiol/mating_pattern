@@ -1,13 +1,12 @@
 import numpy as np
 from itertools import product
-from math import factorial
+from math import factorial, log, exp
 
 
 def likelihood(Q, P):
     shape = Q.flatten()
     shape_range = range(len(shape))
     q_shape = np.shape(Q)
-    print(np.prod(np.add(shape, 1)))
     A = np.ones(shape=np.add(shape, 1), dtype=float)  # create nd array initialised at one
     grid = [range(i+1) for i in shape]  # Create an array of specified dimension
     for coordinate in product(*grid):  # iterate over A
@@ -19,21 +18,25 @@ def likelihood(Q, P):
             mating_pattern = np.reshape(np.array(coordinate), q_shape)
             x, y = (mating_pattern.sum(axis=0), mating_pattern.sum(axis=1))
             A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
-    recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
-    return recurrenceFactor*A[tuple(shape)]
-
+    #recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
+    #return recurrenceFactor*A[tuple(shape)]
+    log_recurrenceFactor = np.sum([log(factorial(i)) for i in np.concatenate((x, y))])+log(np.prod(P**Q))
+    return exp(log_recurrenceFactor+log(A[tuple(shape)]))
 
 if __name__ == '__main__':
     #import yappi
     #yappi.start()
-    import statprof
-    statprof.start()
-    try:
-        P = np.array([[0.1, 0.1, 0.01], [0.2, 0.2, 0.001], [0.1, 0.5, 0.01]], dtype=float)
-        Q = np.array([[20, 20, 10], [20, 10, 10], [50, 20, 10]], dtype=int)
-        print(likelihood(Q, P))
+    #import statprof
+    #statprof.start()
+    #try:
+    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
 
-    finally:
+    P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
+    Q = np.array([[10, 10], [10, 10]], dtype=int)
+    print(likelihood(Q, P))
+
+    #finally:
         #yappi.get_func_stats().print_all()
-        statprof.stop()
-        statprof.display()
+        #statprof.stop()
+        #statprof.display()

@@ -79,6 +79,7 @@ def freqMatingPattern(Q, P, number_simu):
     x = Q.sum(axis=0)
     y = Q.sum(axis=1)
     dict_Q = countMatingPattern(x, y, P, number_simu)
+    print(dict_Q)
     if str(Q) not in dict_Q.keys():
         print("Warning: kys for Q not found")
         return 0
@@ -92,9 +93,12 @@ if __name__ == '__main__':
     # import statprof
     # statprof.start()
     # try:
-    P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
-    Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
-    print(freqMatingPattern(Q, P, 1000))
+    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
+
+    P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
+    Q = np.array([[2, 2], [2, 2]], dtype=int)
+    print(freqMatingPattern(Q, P, 10000))
     # finally:
     #     yappi.get_func_stats().print_all()
     #     statprof.stop()
