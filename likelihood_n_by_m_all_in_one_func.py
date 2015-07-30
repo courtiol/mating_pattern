@@ -1,7 +1,6 @@
 import numpy as np
 from itertools import product
-from math import factorial
-import time
+from math import factorial, log, exp, lgamma
 
 
 def likelihood(Q, P):
@@ -17,29 +16,39 @@ def likelihood(Q, P):
                 if coordinate[i] > 0:
                     result += A[coordinate[:i]+(coordinate[i]-1,)+coordinate[(i+1):]] # A[new tuple with same coordinates but -1 at position i] :
             mating_pattern = np.reshape(np.array(coordinate), q_shape)
-            x, y = (mating_pattern.sum(axis=1), mating_pattern.sum(axis=0))
-            A[coordinate] = result/np.dot(x, np.dot(P, y))  # result is divided by h
-    recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
-    return recurrenceFactor*A[tuple(shape)]
-
+            x, y = (mating_pattern.sum(axis=0), mating_pattern.sum(axis=1))
+            #A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
+            A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
+    #recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
+    #return recurrenceFactor*A[tuple(shape)]
+    log_recurrenceFactor = np.sum([lgamma(i+1) for i in np.concatenate((x, y))])+log(np.prod(P**Q)) # I do lgamma(i+1) as an equivalent of log(factorial(i))
+    print("A = " +str(A[tuple(shape)]))
+    return exp(log_recurrenceFactor+log(A[tuple(shape)]))
 
 if __name__ == '__main__':
     #import yappi
     #yappi.start()
     #import statprof
     #statprof.start()
-    try:
-        ts = time.time()
-        P = np.array([[0.5, 0.6], [0.7, 0.8]], dtype=float)
-        #P = np.array([[1.0, 1], [1, 1]], dtype=float)
-        Q = np.array([[7, 3], [1, 2]], dtype=int)
-        res = likelihood(Q, P)
-        te = time.time()
-        print(res)
-        print("elapsed time "+str(te-ts))
+    #try:
 
+    import time
+    start = time.time()
+    #P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
+    #Q = np.array([[50, 20], [20, 20]], dtype=int)
+    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
+    P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
+    Q = np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]], dtype=int)
+
+
+    print(likelihood(Q, P))
+    stop = time.time()
+    print("time = "+str(round(stop-start))+" sec")
+
+    '''
     finally:
-        pass
         #yappi.get_func_stats().print_all()
-        #statprof.stop()
-        #statprof.display()
+        statprof.stop()
+        statprof.display()
+    '''
