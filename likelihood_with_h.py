@@ -16,8 +16,7 @@ def likelihood(Q, P):
                 if coordinate[i] > 0:
                     result += A[coordinate[:i]+(coordinate[i]-1,)+coordinate[(i+1):]] # A[new tuple with same coordinates but -1 at position i] :
             mating_pattern = np.reshape(np.array(coordinate), q_shape)
-            x, y = (mating_pattern.sum(axis=0), mating_pattern.sum(axis=1))
-            #A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
+            x, y = (mating_pattern.sum(axis=1), mating_pattern.sum(axis=0))
             A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
     #recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
     #return recurrenceFactor*A[tuple(shape)]
@@ -39,7 +38,7 @@ if __name__ == '__main__':
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
     #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
     P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
-    Q = np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]], dtype=int)
+    Q = np.array([[20, 10, 10], [10, 20, 10], [1, 1, 1]], dtype=int)
 
 
     print(likelihood(Q, P))
