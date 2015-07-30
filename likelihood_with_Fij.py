@@ -12,12 +12,12 @@ def likelihood(Q, P):
     for coordinate in product(*grid):  # iterate over A
         if sum(coordinate) > 0:
             result = 0
+            mating_pattern = np.reshape(np.array(coordinate), q_shape)
+            x, y = (mating_pattern.sum(axis=0), mating_pattern.sum(axis=1))
             for i in shape_range:
                 if coordinate[i] > 0:
                     result += A[coordinate[:i]+(coordinate[i]-1,)+coordinate[(i+1):]] # A[new tuple with same coordinates but -1 at position i] :
-            mating_pattern = np.reshape(np.array(coordinate), q_shape)
-            x, y = (mating_pattern.sum(axis=0), mating_pattern.sum(axis=1))
-            #A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
+
             A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
     #recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
     #return recurrenceFactor*A[tuple(shape)]

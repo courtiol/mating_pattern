@@ -41,7 +41,7 @@ def likelihood(Q, P):
     return likelihoodR(Q.flatten(), P)*recurrenceFactor
 
 P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
-Q = np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]], dtype=int)
+Q = np.array([[2, 1, 1], [1, 2, 1], [1, 1, 1]], dtype=int)
 
 ts = time.time()
 res = likelihood(Q, P)
