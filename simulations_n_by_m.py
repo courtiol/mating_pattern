@@ -76,8 +76,8 @@ def freqMatingPattern(Q, P, number_simu):
     if np.shape(Q)[0] != np.shape(Q)[1] | np.shape(P)[0] != np.shape(P)[1]:
         print("error: np arrays for Q and P must be square matrices")
         return 0
-    x = Q.sum(axis=0)
-    y = Q.sum(axis=1)
+    x = Q.sum(axis=1)
+    y = Q.sum(axis=0)
     dict_Q = countMatingPattern(x, y, P, number_simu)
     print(dict_Q)
     if str(Q) not in dict_Q.keys():
@@ -96,10 +96,11 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    #P = np.array([[1.0, 1.0], [1.0, 1.0]], dtype=float)
-    #Q = np.array([[50, 20], [20, 20]], dtype=int)
-    P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
-    Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
+    P = np.array([[0.2, 0.2], [0.2, 0.2]], dtype=float)
+    Q = np.array([[0, 2], [3, 1]], dtype=int)
+    print(Q)
+    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
+    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
 
     print(freqMatingPattern(Q, P, 10000))
     stop = time.time()
