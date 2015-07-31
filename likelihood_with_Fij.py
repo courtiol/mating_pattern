@@ -18,7 +18,7 @@ def likelihood(Q, P):
                     index = len(y)*i+j
                     if coordinate[index] > 0:
                         result += P[i, j]*x[i]*y[j]*A[coordinate[:index]+(coordinate[index]-1,)+coordinate[(index+1):]] # A[new tuple with same coordinates but -1 at position i] :
-            A[coordinate] = result/np.dot(y, np.dot(P, x))  # result is divided by h
+            A[coordinate] = result/np.dot(x, np.dot(P, y))  # result is divided by h
     return A[tuple(shape)]
 
 if __name__ == '__main__':
