@@ -15,8 +15,7 @@ def memoize(f):
 #recursive version
 
 def h(coordinate, P):
-    temp = sqrt(len(coordinate))
-    q_shape = (temp , temp)
+    q_shape = np.shape(P)
     mating_pattern = np.reshape(np.array(coordinate), q_shape)
     x, y = (mating_pattern.sum(axis=1), mating_pattern.sum(axis=0))
     return float(np.dot(x, np.dot(P, y)))

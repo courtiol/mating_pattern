@@ -1,6 +1,7 @@
 import numpy as np
-import likelihood_n_by_m_recursive
-import likelihood_n_by_m_all_in_one_func
+import likelihood_with_h
+import likelihood_with_Fij
+import  likelihood_with_h_recursive
 import simulations_n_by_m
 from functools import partial
 
@@ -23,9 +24,9 @@ all_results = []
 n = 10000
 
 functions = []
-functions.append(partial(simulations_n_by_m.freqMatingPattern, number_simu=10000))
-functions.append(likelihood_n_by_m_all_in_one_func.likelihood)
-functions.append(likelihood_n_by_m_recursive.likelihood)
+functions.append(partial(simulations_n_by_m.freqMatingPattern, number_simu=1000))
+functions.append(likelihood_with_h.likelihood)
+functions.append(likelihood_with_Fij.likelihood)
 
 for Q,P in test_data:
     result = []
