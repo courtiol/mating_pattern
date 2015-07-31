@@ -96,8 +96,8 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    P = np.array([[1.0, 0.8], [0.5, 0.1]], dtype=float)
-    Q = np.array([[5, 4], [3, 2]], dtype=int)
+    P = np.array([[1.0, 0.8, 0.6], [0.5, 0.3, 0.1]], dtype=float)
+    Q = np.array([[5, 4, 3], [2, 1, 0]], dtype=int)
     print(Q)
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
     #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
