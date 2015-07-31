@@ -38,7 +38,6 @@ def computeMatingPattern(x, y, P):
             Q[cx, cy] += 1
     if sum(x) > 0:  # add unpaired males to Q
         for i in range(len(x)):
-            print(i)
             Q[i, Q.shape[1]-1] = x[i]
     if sum(y) > 0:  # add unpaired females to Q
         for i in range(len(y)):
@@ -48,8 +47,8 @@ def computeMatingPattern(x, y, P):
 '''
 # test:
 males = np.array([1, 3])
-females = np.array([5, 2])
-Pref = np.array([[0.5, 0.5], [0.5, 0.5]])
+females = np.array([1, 1])
+Pref = np.array([[1, 0.8], [0.5, 0.2]])
 computeMatingPattern(males, females, Pref)
 '''
 
@@ -65,10 +64,10 @@ def countMatingPattern(x, y, P, number_simu):
     return dict_Q
 '''
 # test:
-males = np.array([10, 3])
-females = np.array([5, 2])
-Pref = np.array([[0.5, 0.5], [0.5, 0.5]])
-countMatingPattern(males, females, Pref, 10)
+males = np.array([1, 3])
+females = np.array([1, 1])
+Pref = np.array([[1, 0.8], [0.5, 0.2]])
+countMatingPattern(males, females, Pref, 10000)
 '''
 
 
@@ -96,8 +95,8 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    P = np.array([[1.0, 0.8, 0.6], [0.5, 0.3, 0.1]], dtype=float)
-    Q = np.array([[5, 4, 3], [2, 1, 0]], dtype=int)
+    P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
+    Q = np.array([[1, 3], [1, 1]], dtype=int)
     print(Q)
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
     #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)

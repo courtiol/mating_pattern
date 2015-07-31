@@ -3,7 +3,7 @@ from itertools import product
 from math import factorial, log, exp, lgamma
 
 
-def likelihood(Q, P):
+def likelihood(Q, P, limit_zero=False):
     shape = Q.flatten()
     q_shape = np.shape(Q)
     A = np.ones(shape=np.add(shape, 1), dtype=float)  # create nd array initialised at one
@@ -18,7 +18,13 @@ def likelihood(Q, P):
                     index = len(y)*i+j
                     if coordinate[index] > 0:
                         result += P[i, j]*x[i]*y[j]*A[coordinate[:index]+(coordinate[index]-1,)+coordinate[(index+1):]] # A[new tuple with same coordinates but -1 at position i] :
-            A[coordinate] = result/np.dot(x, np.dot(P, y))  # result is divided by h
+            if np.dot(x, np.dot(P, y)) == 0 and result == 0:
+                if limit_zero: # to compute likelihood when pref tend to zero (to consider virtual types)
+                    A[coordinate] = 1
+                else:
+                    A[coordinate] = 0 # to compute likelihood when pref really are zero
+            else:
+                A[coordinate] = result/np.dot(x, np.dot(P, y))  # result is divided by h
     return A[tuple(shape)]
 
 if __name__ == '__main__':
@@ -30,8 +36,10 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    P = np.array([[1.0, 0.8, 0.6], [0.5, 0.3, 0.1]], dtype=float)
-    Q = np.array([[5, 4, 3], [2, 1, 0]], dtype=int)
+    #P = np.array([[1.0, 0.8, 0], [0.5, 0.2, 0]], dtype=float)
+    #Q = np.array([[0, 1, 0], [1, 0, 2]], dtype=int)
+    P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)
+    Q = np.array([[1, 1], [1, 1]], dtype=int)
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
     #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
     #P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
