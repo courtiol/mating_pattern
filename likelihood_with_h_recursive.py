@@ -40,8 +40,8 @@ def likelihood(Q, P):
     recurrenceFactor = np.prod([factorial(i) for i in np.concatenate((x, y))])*np.prod(P**Q)  # NB: x and y are same as in Q
     return likelihoodR(Q.flatten(), P)*recurrenceFactor
 
-P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
-Q = np.array([[2, 1, 1], [1, 2, 1], [1, 1, 1]], dtype=int)
+P = np.array([[1.0, 0.8], [0.5, 0.1]], dtype=float)
+Q = np.array([[5, 4], [3, 2]], dtype=int)
 
 ts = time.time()
 res = likelihood(Q, P)
