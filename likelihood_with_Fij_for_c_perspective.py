@@ -33,8 +33,8 @@ def xy_from_matrix(m, nrow, ncol):
     y = [0, ]*ncol
     for j in range(0, nrow):
             for i in range(ncol):
-                y[i] += m[len(y)*j+i]
-                x[j] += m[len(y)*j+i]
+                y[i] += m[ncol*j+i]
+                x[j] += m[ncol*j+i]
     return x, y
 '''
 # Test:
