@@ -18,13 +18,15 @@ def likelihood(Q, P, limit_zero=False):
                     index = len(y)*i+j
                     if coordinate[index] > 0:
                         result += P[i, j]*x[i]*y[j]*A[coordinate[:index]+(coordinate[index]-1,)+coordinate[(index+1):]] # A[new tuple with same coordinates but -1 at position i] :
-            if np.dot(x, np.dot(P, y)) == 0 and result == 0:
+            h = np.dot(x, np.dot(P, y))
+            if h == 0 and result == 0:
                 if limit_zero: # to compute likelihood when pref tend to zero (to consider virtual types)
                     A[coordinate] = 1
                 else:
                     A[coordinate] = 0 # to compute likelihood when pref really are zero
             else:
-                A[coordinate] = result/np.dot(x, np.dot(P, y))  # result is divided by h
+                A[coordinate] = result/h  # result is divided by h
+    print(h)
     return A[tuple(shape)]
 
 if __name__ == '__main__':
@@ -36,8 +38,8 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
-    Q = np.array([[50, 4], [30, 2]], dtype=int)
+    Q = np.array([[5, 4, 2], [3, 2, 1]], dtype=int)
+    P = np.array([[1.0, 0.8, 0.2], [0.5, 0.2, 0.7]], dtype=float)
     #P = np.array([[1.0, 0.8, 0], [0.5, 0.2, 0]], dtype=float)
     #Q = np.array([[0, 1, 0], [1, 0, 2]], dtype=int)
     #P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)

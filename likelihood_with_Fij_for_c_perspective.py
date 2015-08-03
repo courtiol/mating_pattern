@@ -53,17 +53,17 @@ def likelihood(Q, P, nrow, ncol, limit_zero=False):
             x, y = xy_from_matrix(coordinate, nrow, ncol)
             for i in range(nrow):
                 for j in range(ncol):
-                    index = len(y)*i+j
+                    index = ncol*i+j
                     if coordinate[index] > 0:
                         pos = coordinate.copy()
                         pos[index] -= 1
                         new_index = coordinate_to_index(pos, Q)
-                        tmp = P[i*nrow+j]*x[i]*y[j]*A[new_index]
+                        tmp = P[ncol*i+j]*x[i]*y[j]*A[new_index]
                         result += tmp
             h = 0
             for i in range(nrow):
                 for j in range(ncol):
-                    h += P[i*nrow+j]*x[i]*y[j]
+                    h += P[ncol*i+j]*x[i]*y[j]
             if h == 0 and result == 0:
                 if limit_zero:  # to compute likelihood when pref tend to zero (to consider virtual types)
                     A[coordinate_to_index(coordinate, Q)] = 1
@@ -71,6 +71,7 @@ def likelihood(Q, P, nrow, ncol, limit_zero=False):
                     A[coordinate_to_index(coordinate, Q)] = 0  # to compute likelihood when pref really are zero
             else:
                 A[coordinate_to_index(coordinate, Q)] = result/h
+    print(h)
     return A[coordinate_to_index(Q, Q)]
 
 if __name__ == '__main__':
@@ -79,8 +80,8 @@ if __name__ == '__main__':
     start = time.time()
     #P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
     #Q = np.array([[50, 4], [30, 2]], dtype=int)
-    P = [1.0, 0.8, 0.5, 0.2]
-    Q = [50, 4, 30, 2]
+    Q =[5, 4, 2, 3, 2, 1]
+    P =[1.0, 0.8, 0.2, 0.5, 0.2, 0.7]
     #P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)
     #Q = np.array([[1, 1], [1, 1]], dtype=int)
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     #Q = np.array([[20, 10, 10], [10, 20, 10], [1, 1, 1]], dtype=int)
 
 
-    print(likelihood(Q, P, nrow=2, ncol=2))
+    print(likelihood(Q, P, nrow=2, ncol=3))
     stop = time.time()
     print("time = "+str(round(stop-start))+" sec")
 
