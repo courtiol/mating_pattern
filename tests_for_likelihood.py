@@ -9,16 +9,15 @@ def translate(Q, P):
     ncol = np.shape(Q)[1]
     return Qflat, Pflat, nrow, ncol
 
+Q = np.array([[1, 1], [1, 1]], dtype=int)
+P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)
+print("forward simu in R = 0.66")
+print(L1.likelihood(Q, P, limit_zero=True))  # wrong result
+print(L2.likelihood(*translate(Q, P), limit_zero=True))  # wrong result
 
 Q = np.array([[50, 4], [30, 2]], dtype=int)
 P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
 print("forward simu in R = 0.3322")
-print(L1.likelihood(Q, P))
-print(L2.likelihood(*translate(Q, P)))
-
-Q = np.array([[50, 4, 2], [30, 2, 15]], dtype=int)
-P = np.array([[1.0, 0.8, 0.2], [0.5, 0.2, 0.7]], dtype=float)
-print("forward simu in R = 0.07744")
 print(L1.likelihood(Q, P))
 print(L2.likelihood(*translate(Q, P)))
 
