@@ -1,6 +1,6 @@
 def index_to_coordinate(index, dim):
     i = [1, ]*len(dim)
-    for x in range(0, len(dim)):
+    for x in range(len(dim)):
         i[x] = int(index % (dim[x]+1))
         index -= i[x]
         index /= (dim[x]+1)
@@ -17,12 +17,11 @@ def coordinate_to_index(coordinate, max_coordinate):
     value = 0
     while not i == -1:
         tmp = coordinate[i]
-        for j in range(0, i):
+        for j in range(i):
             tmp *= (max_coordinate[j]+1)
         value += tmp
         i -= 1
     return value
-
 '''
 # Test:
 coordinate_test = index_to_coordinate(25, dim=[2,5,2,3])
@@ -32,22 +31,22 @@ coordinate_to_index(coordinate_test, max_coordinate=[2,5,2,3])
 def xy_from_matrix(m, nrow, ncol):
     x = [0, ]*nrow
     y = [0, ]*ncol
-    for j in range(0, len(x)):
-            for i in range(0, len(y)):
+    for j in range(0, nrow):
+            for i in range(ncol):
                 y[i] += m[len(y)*j+i]
                 x[j] += m[len(y)*j+i]
-    return(x, y)
-
+    return x, y
+'''
 # Test:
-#xy_from_matrix([1,2,3,5,6,7], 2, 3)
-
+xy_from_matrix([1,2,3,5,6,7], 2, 3)
+'''
 
 def likelihood(Q, P, nrow, ncol, limit_zero=False):
     coordinate_indexes = 1
     for i in range(nrow*ncol):
         coordinate_indexes *= (Q[i]+1)
     A = [1, ]*coordinate_indexes
-    for coordinate_index in range(0, coordinate_indexes):
+    for coordinate_index in range(coordinate_indexes):
         coordinate = index_to_coordinate(coordinate_index, Q)
         if sum(coordinate) > 0:
             result = 0
@@ -66,20 +65,15 @@ def likelihood(Q, P, nrow, ncol, limit_zero=False):
                 for j in range(ncol):
                     h += P[i*nrow+j]*x[i]*y[j]
             if h == 0 and result == 0:
-                if limit_zero: # to compute likelihood when pref tend to zero (to consider virtual types)
+                if limit_zero:  # to compute likelihood when pref tend to zero (to consider virtual types)
                     A[coordinate_to_index(coordinate, Q)] = 1
                 else:
-                    A[coordinate_to_index(coordinate, Q)] = 0 # to compute likelihood when pref really are zero
+                    A[coordinate_to_index(coordinate, Q)] = 0  # to compute likelihood when pref really are zero
             else:
                 A[coordinate_to_index(coordinate, Q)] = result/h
     return A[coordinate_to_index(Q, Q)]
 
 if __name__ == '__main__':
-    #import yappi
-    #yappi.start()
-    #import statprof
-    #statprof.start()
-    #try:
 
     import time
     start = time.time()
@@ -99,9 +93,3 @@ if __name__ == '__main__':
     stop = time.time()
     print("time = "+str(round(stop-start))+" sec")
 
-    '''
-    finally:
-        #yappi.get_func_stats().print_all()
-        statprof.stop()
-        statprof.display()
-    '''
