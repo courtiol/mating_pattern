@@ -77,18 +77,8 @@ if __name__ == '__main__':
 
     import time
     start = time.time()
-    #P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
-    #Q = np.array([[50, 4], [30, 2]], dtype=int)
     Q =[5, 4, 2, 3, 2, 1]
     P =[1.0, 0.8, 0.2, 0.5, 0.2, 0.7]
-    #P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)
-    #Q = np.array([[1, 1], [1, 1]], dtype=int)
-    #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
-    #Q = np.array([[10, 10, 0], [10, 10, 0], [0, 0, 0]], dtype=int)
-    #P = np.array([[0.5, 0.6, 0.8], [0.7, 0.8, 0.9], [0.5, 0.4, 0.2]], dtype=float)
-    #Q = np.array([[20, 10, 10], [10, 20, 10], [1, 1, 1]], dtype=int)
-
-
     print(likelihood(Q, P, nrow=2, ncol=3))
     stop = time.time()
     print("time = "+str(round(stop-start))+" sec")
