@@ -44,16 +44,16 @@ def xy_from_matrix(m, nrow, ncol):
 
 def likelihood(Q, P, nrow, ncol, limit_zero=False):
     coordinate_indexes = 1
-    for i in range(len(Q)):
+    for i in range(nrow*ncol):
         coordinate_indexes *= (Q[i]+1)
     A = [1, ]*coordinate_indexes
-    for coordinate_index in range(0, coordinate_indexes):  # iterate over A
+    for coordinate_index in range(0, coordinate_indexes):
         coordinate = index_to_coordinate(coordinate_index, Q)
         if sum(coordinate) > 0:
             result = 0
             x, y = xy_from_matrix(coordinate, nrow, ncol)
-            for i in range(len(x)):
-                for j in range(len(y)):
+            for i in range(nrow):
+                for j in range(ncol):
                     index = len(y)*i+j
                     if coordinate[index] > 0:
                         pos = coordinate.copy()
@@ -62,8 +62,8 @@ def likelihood(Q, P, nrow, ncol, limit_zero=False):
                         tmp = P[i*nrow+j]*x[i]*y[j]*A[new_index]
                         result += tmp
             h = 0
-            for i in range(0, nrow):
-                for j in range(0, ncol):
+            for i in range(nrow):
+                for j in range(ncol):
                     h += P[i*nrow+j]*x[i]*y[j]
             if h == 0 and result == 0:
                 if limit_zero: # to compute likelihood when pref tend to zero (to consider virtual types)
