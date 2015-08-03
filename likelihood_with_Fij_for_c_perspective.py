@@ -17,19 +17,22 @@ for i in range(0, 24):
 '''
 
 
-def coordinate_to_index(coordinate):
-    # work in progress...
-    values = np.ones(len(coordinate), dtype=int)
-    for i in range(0, len(coordinate)):
-        for j in range(0, (i+1)):
-            for k in range(0, (coordinate[j]+1)):
-                values[i] *= (k+1)
-    return values
+def coordinate_to_index(coordinate, max_coordinate):
+    i = len(coordinate)-1
+    value = 0
+    while not i == -1:
+        tmp = coordinate[i]
+        for j in range(0, i):
+            tmp *= (max_coordinate[j]+1)
+        value += tmp
+        i -= 1
+    return value
 
+'''
 # Test:
-coordinate_test = index_to_coordinate(20, dim=np.array([1,2,3], dtype=int))
-coordinate_to_index(coordinate_test)
-
+coordinate_test = index_to_coordinate(25, dim=np.array([2,5,2,3], dtype=int))
+coordinate_to_index(coordinate_test, max_coordinate=np.array([2,5,2,3], dtype=int))
+'''
 
 def xy_from_matrix(m, nrow, ncol):
     x = np.zeros(shape=nrow, dtype=int)
