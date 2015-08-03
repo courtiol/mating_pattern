@@ -71,7 +71,6 @@ def likelihood(Q, P, nrow, ncol, limit_zero=False):
                     A[coordinate_to_index(coordinate, Q)] = 0  # to compute likelihood when pref really are zero
             else:
                 A[coordinate_to_index(coordinate, Q)] = result/h
-    print(h)
     return A[coordinate_to_index(Q, Q)]
 
 if __name__ == '__main__':

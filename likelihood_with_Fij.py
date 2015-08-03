@@ -26,7 +26,6 @@ def likelihood(Q, P, limit_zero=False):
                     A[coordinate] = 0 # to compute likelihood when pref really are zero
             else:
                 A[coordinate] = result/h  # result is divided by h
-    print(h)
     return A[tuple(shape)]
 
 if __name__ == '__main__':
