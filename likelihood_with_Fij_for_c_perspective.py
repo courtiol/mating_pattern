@@ -3,16 +3,59 @@ from itertools import product
 from math import factorial, log, exp, lgamma
 
 
+def index_to_coordinate(index, dim):
+    i = np.ones(shape=len(dim), dtype=int)
+    for x in range(0, len(dim)):
+        i[x] = index % (dim[x]+1)
+        index -= i[x]
+        index /= (dim[x]+1)
+    return i
+'''
+# Test:
+for i in range(0, 24):
+    print(str(i)+" "+str(index_to_coordinate(i, dim=np.array([1,2,3], dtype=int))))
+'''
+
+
+def coordinate_to_index(coordinate):
+    # work in progress...
+    values = np.ones(len(coordinate), dtype=int)
+    for i in range(0, len(coordinate)):
+        for j in range(0, (i+1)):
+            for k in range(0, (coordinate[j]+1)):
+                values[i] *= (k+1)
+    return values
+
+# Test:
+coordinate_test = index_to_coordinate(20, dim=np.array([1,2,3], dtype=int))
+coordinate_to_index(coordinate_test)
+
+
+def xy_from_matrix(m, nrow, ncol):
+    x = np.zeros(shape=nrow, dtype=int)
+    y = np.zeros(shape=ncol, dtype=int)
+    for j in range(0, len(x)):
+            for i in range(0, len(y)):
+                y[i] += m[len(y)*j+i]
+                x[j] += m[len(y)*j+i]
+    return(x, y)
+
+# Test:
+#xy_from_matrix(np.array([1,2,3,5,6,7], dtype=int), 2, 3)
+
+
 def likelihood(Q, P, limit_zero=False):
     shape = Q.flatten()
     q_shape = np.shape(Q)
     A = np.ones(shape=np.add(shape, 1), dtype=float)  # create nd array initialised at one
-    grid = [range(i+1) for i in shape]  # Create an array of specified dimension
-    for coordinate in product(*grid):  # iterate over A
+    coordinate_indexes = 1
+    for i in range(len(shape)):
+        coordinate_indexes *= (shape[i]+1)
+    for coordinate_index in range(0, coordinate_indexes):  # iterate over A
+        coordinate = tuple(index_to_coordinate(coordinate_index, shape))
         if sum(coordinate) > 0:
             result = 0
-            mating_pattern = np.reshape(np.array(coordinate), q_shape)
-            x, y = (mating_pattern.sum(axis=1), mating_pattern.sum(axis=0)) # x = row sum, y = col sum
+            x, y = xy_from_matrix(np.array(coordinate, dtype=int), q_shape[0], q_shape[1])
             for i in range(len(x)):
                 for j in range(len(y)):
                     index = len(y)*i+j
@@ -38,8 +81,6 @@ if __name__ == '__main__':
     start = time.time()
     P = np.array([[1.0, 0.8], [0.5, 0.2]], dtype=float)
     Q = np.array([[50, 4], [30, 2]], dtype=int)
-    #P = np.array([[1.0, 0.8, 0], [0.5, 0.2, 0]], dtype=float)
-    #Q = np.array([[0, 1, 0], [1, 0, 2]], dtype=int)
     #P = np.array([[0.0, 0.0], [0.0, 0.0]], dtype=float)
     #Q = np.array([[1, 1], [1, 1]], dtype=int)
     #P = np.array([[1.0, 1.0, 0.01], [1.0, 1.0, 0.01], [0.001, 0.001, 0]], dtype=float)
